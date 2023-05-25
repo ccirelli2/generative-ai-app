@@ -8,22 +8,11 @@ References
 2. https://python.langchain.com/en/latest/modules/agents/toolkits/examples/pandas.html
 
 """
-
-
 # Import Libraries
 import os
 import logging
 import pandas as pd
-from PIL import Image
-import numpy as np
-import matplotlib
-import matplotlib.pyplot as plt
-import streamlit as st
-from config import data_file_names
-from langchain import OpenAI
-from pandasai import PandasAI
-from pandasai.llm.starcoder import Starcoder
-from langchain.agents import create_pandas_dataframe_agent
+from config import config
 from decouple import config as d_config
 
 logging.basicConfig(level=logging.INFO)
@@ -40,7 +29,7 @@ DIR_DATA = d_config("DIR_DATA")
 # Globals
 OPENAI_TOKEN = d_config("OPEN_AI_TOKEN")
 HF_TOKEN = d_config("HUGGING_FACE_TOKEN")
-HOUSING_FILE_NAME = data_file_names["HOUSING_FILE_NAME"]
+HOUSING_FILE_NAME = config.data_file_names["HOUSING_FILE_NAME"]
 
 # Load Data
 housing_df = pd.read_csv(os.path.join(DIR_DATA, "housing.csv"))

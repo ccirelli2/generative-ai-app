@@ -8,17 +8,17 @@ from decouple import config as d_config
 from huggingface_hub import login
 
 # Globals
-DIR_ROOT = "/home/christopher-cirelli/repositories/pandas-ai-sandbox"
+DIR_ROOT = d_config("DIR_ROOT")
 DIR_APP = os.path.join(DIR_ROOT, 'app')
 os.chdir(DIR_ROOT)
 
 # Import Custom Modules
-from src import starcoder_inference as si
-from config import STARCODER_CONFIG as starcoder_config
+from src.code_generation import starcoder as si
+from config.starcoder import starcoder_config
 
 # Globals
 HF_TOKEN = d_config("HUGGING_FACE_TOKEN")
-HF_INF_URL = starcoder_config['URL']
+HF_API = starcoder_config['API']
 prompt = None
 
 # Login to HuggingFace
@@ -96,7 +96,6 @@ if prompt:
         timeout=60
     )
 
-    #valid_response = si.validate_response(response, user_input)
-    #st.text("")
-    #st.text("")
     st.write(response.json()[0]["generated_text"])
+
+st.sidebar
