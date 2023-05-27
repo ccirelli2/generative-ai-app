@@ -13,7 +13,7 @@ DIR_APP = os.path.join(DIR_ROOT, 'app')
 os.chdir(DIR_ROOT)
 
 # Import Custom Modules
-from src.code_generation import starcoder as si
+from src.code_completion import starcoder as si
 from config.starcoder import starcoder_config
 
 # Globals
