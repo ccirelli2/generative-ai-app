@@ -10,14 +10,10 @@ References
 
 """
 # Import Libraries
-import os
 import logging
 import pandas as pd
 import openai
-from pprint import pprint
-from config import openai as openai_config
 from decouple import config as d_config
-from langchain import OpenAI
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -32,7 +28,7 @@ DIR_DATA = d_config("DIR_DATA")
 
 # Globals
 OPENAI_TOKEN = d_config("OPEN_AI_TOKEN")
-OPENAI_MODEL = 'text-ada-001'
+OPENAI_MODEL = 'text-davinci-003'
 
 # Log Into Open AI
 openai.api_key = OPENAI_TOKEN
@@ -70,11 +66,19 @@ def prompt_completion(
 
     return response
 
+def concat_prompt_response(prompt: str, response: dict) -> str:
+    """
+    Function to combine the prompt and the text response.
+    :param response:
+    :return:
+    """
+    return prompt + response['choices'][0]['text']
+
 
 if __name__ == "__main__":
     max_tokens = 50
     temperature = 0.5
-    prompt = "American International Group is a company that"
+    prompt = "def hello_world(name:"
 
     response = prompt_completion(
         model=OPENAI_MODEL,
@@ -83,5 +87,5 @@ if __name__ == "__main__":
         temperature=temperature
     )
 
-
-    print(response)
+    complete_response = concat_prompt_response(prompt=prompt, response=response)
+    print(complete_response)

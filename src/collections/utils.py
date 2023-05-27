@@ -1,7 +1,6 @@
 """
-
+Miscellaneous utility functions.
 """
-
 import logging
 import pandas as pd
 import openai
@@ -40,8 +39,3 @@ def openai_model_config(api_key: str) -> dict:
     for mg in model_groups:
         model_config[mg] = [x for x in model_names if mg in x]
     return model_config
-
-
-if __name__ == "__main__":
-    model_config = openai_model_config(api_key=OPENAI_TOKEN)
-    pprint(model_config)
