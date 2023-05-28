@@ -14,8 +14,14 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 HF_TOKEN = d_config("HUGGING_FACE_TOKEN")
 HF_INF_URL = "https://api-inference.huggingface.co/models/bigcode/starcoder"
 
+
+
+
+"""
 # Login to HuggingFace Hub
+print('Logging into HF Hub')
 login(token=HF_TOKEN)
+print('Successfully logged in')
 
 """Query the API"""
 headers = {"Authorization": f"Bearer {HF_TOKEN}"}
@@ -37,4 +43,4 @@ try:
 except Exception as err:
     print(err)
 
-
+"""

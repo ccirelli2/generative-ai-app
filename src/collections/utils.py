@@ -4,6 +4,7 @@ Miscellaneous utility functions.
 import logging
 import pandas as pd
 import openai
+from huggingface_hub import login
 from pprint import pprint
 from decouple import config as d_config
 
@@ -22,7 +23,7 @@ DIR_DATA = d_config("DIR_DATA")
 OPENAI_TOKEN = d_config("OPEN_AI_TOKEN")
 
 
-def openai_model_config(api_key: str) -> dict:
+def get_openai_model_config(api_key: str) -> dict:
     """
 
     :param api_key:
@@ -39,3 +40,19 @@ def openai_model_config(api_key: str) -> dict:
     for mg in model_groups:
         model_config[mg] = [x for x in model_names if mg in x]
     return model_config
+
+
+def login_model(model_provider: str, model_token: str):
+    """
+
+    :param model_provider:
+    :param model_token:
+    :return:
+    """
+    if model_provider == "OpenAI":
+        pass
+
+    elif model_provider == "HuggingFace":
+        login(token=model_token)
+    pass
+

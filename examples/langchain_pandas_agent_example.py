@@ -12,7 +12,7 @@ References
 import os
 import logging
 import pandas as pd
-from config import config
+from config import config_app
 from decouple import config as d_config
 
 logging.basicConfig(level=logging.INFO)
