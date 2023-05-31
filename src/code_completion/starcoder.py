@@ -18,10 +18,11 @@ logger.setLevel(logging.INFO)
 
 
 class StarcoderAPI:
-    def __init__(self, url: str, headers: str, prompt: str, timeout=60):
+    def __init__(self, url: str, headers: str, prompt: str, parameters: dict = {}, timeout=60):
         self.url = url
         self.headers = headers
         self.prompt = prompt
+        self.parameters = parameters
         self.timeout = timeout
         self.response_json = None
         self.response_clean = None
@@ -41,7 +42,7 @@ class StarcoderAPI:
         response = requests.post(
             url=self.url,
             headers=self.headers,
-            json={"inputs": self.prompt},
+            json={"inputs": self.prompt, "parameters": self.parameters},
             timeout=self.timeout
         )
         assert response.status_code == 200, f"Response Failed with Status Code: {response.status_code}"

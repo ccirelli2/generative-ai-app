@@ -1,5 +1,7 @@
 """
-
+TODO: Add the ability to input parameters for the models.
+TODO: Add functionality for OpenAI models.
+TODO: How can we setup the code to be agnostsic to the model?  Each interface is different, prompt, parameters, etc.
 """
 # Import Standard / Installed Libraries
 import os
@@ -127,13 +129,18 @@ with st.expander("Details"):
 #######################################################
 st.subheader("Prompt Selection")
 prompt = st.selectbox(label="Prompts", options=config_prompts.code_completion)
+st.text("")
 
-if st.button(label="Complete Code"):
-    starApi = StarcoderAPI(
-        url=model_config[service_provider]["api"],
-        headers=api_config[service_provider]["headers"],
-        prompt=prompt,
-        timeout=60
-    ).pipeline()
+if service_provider == "HuggingFace":
+    if st.button(label="Complete Code"):
+        starApi = StarcoderAPI(
+            url=model_config[service_provider][model_parent_name]["api"],
+            headers=api_config[service_provider]["headers"],
+            prompt=prompt,
+            timeout=60
+        ).pipeline()
 
-    st.write(starApi.response_clean)
+        st.write(starApi.response_clean)
+else:
+    st.text("")
+    st.subheader("Unknown Service Provider")

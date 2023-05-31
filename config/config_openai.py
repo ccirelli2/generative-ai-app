@@ -7,6 +7,9 @@ models = {
         "names": ['gpt-3.5-turbo', 'gpt-3.5-turbo-0301'],
         "cost": "",
         "description": "",
+        "url": "",
+        "api": "",
+        "parameters": []
     },
     'ada': {
         "names": [
@@ -16,6 +19,9 @@ models = {
             'code-search-ada-code-001', 'ada-search-query', 'ada-search-document', 'ada:2020-05-03', 'text-ada:001'],
         "cost": "",
         "description": "",
+        "url": "",
+        "api": "",
+        "parameters": []
     },
     'babbage': {
         "names": [
@@ -25,6 +31,9 @@ models = {
             'text-search-babbage-query-001', 'babbage:2020-05-03', 'text-babbage:001'],
         "cost": "",
         "description": "",
+        "url": "",
+        "api": "",
+        "parameters": []
     },
     'curie': {
         "names": [
@@ -33,6 +42,9 @@ models = {
             'curie', 'curie:2020-05-03', 'if-curie-v2', 'text-curie:001'],
         "cost": "",
         "description": "",
+        "url": "",
+        "api": "",
+        "parameters": []
     },
     'davinci': {
         "names": [
@@ -43,6 +55,9 @@ models = {
             'davinci-instruct-beta:2.0.0', 'text-davinci:001'],
         "cost": "",
         "description": "",
+        "url": "",
+        "api": "",
+        "parameters": []
     }
 }
 

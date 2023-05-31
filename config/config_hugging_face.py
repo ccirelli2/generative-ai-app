@@ -24,6 +24,7 @@ models = {
                        "using the Tech Assistant prompt you can turn it into a capable technical assistant.",
         "url": "https://huggingface.co/bigcode/starcoder",
         "api": "https://api-inference.huggingface.co/models/bigcode/starcoder",
+        "parameters": ["max_new_tokens"]
     },
     "starcoder_tech_assistant": {
         "names": ["starcoder_tech_assistant"],
@@ -31,6 +32,7 @@ models = {
         "description": "",
         "url": "https://huggingface.co/datasets/bigcode/ta-prompt",
         "api": "https://api-inference.huggingface.co/models/bigcode/ta-prompt",
+        "parameters": []
     }
 }
 

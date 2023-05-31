@@ -12,18 +12,20 @@ from config import config_prompts
 login(token=api["token"])
 
 # Prompt
-prompt = "def create_pandas_dataframe(data: dict):"
+prompt = "def hello(name: str):"
 
 # API
 starApi = StarcoderAPI(
     url=models["starcoder"]["api"],
     headers=api["headers"],
     prompt=prompt,
+    parameters={"max_new_tokens": 250},
     timeout=60
 ).pipeline()
 
 print(starApi.response_clean)
-
+print(len(prompt))
+print(len(starApi.response_json[0]["generated_text"]))
 """
 response_json = response.json()
 response_text = response_json[0]["generated_text"]
