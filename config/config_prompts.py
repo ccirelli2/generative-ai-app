@@ -1,9 +1,11 @@
+"""
+Config file to define various curated prompt & prompt templates.
+"""
 
-
-prompt_templates = {}
-prompts = {
-    "starcoder": [
+code_completion = [
         "",
-        "Write a function to print hello world.",
-        "Write a function to return 'hello world'"]
-}
+        "def hello(name: str):",
+        "def add(a: int, b: int):",
+]
+
+text_prompt_config = {}

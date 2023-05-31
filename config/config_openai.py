@@ -2,7 +2,7 @@
 
 """
 
-model_names = {
+models = {
     'gpt-3': {
         "names": ['gpt-3.5-turbo', 'gpt-3.5-turbo-0301'],
         "cost": "",
@@ -46,3 +46,4 @@ model_names = {
     }
 }
 
+api = {}

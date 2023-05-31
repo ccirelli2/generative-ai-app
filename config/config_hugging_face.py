@@ -8,21 +8,35 @@ from langchain import PromptTemplate
 from decouple import config as d_config
 
 # Configs
-model_names = ["starcoder"]
-
-model_names = {
+models = {
     "starcoder": {
         "names": ["starcoder"],
         "cost": "Free",
-        "description": "The StarCoder models are 15.5B parameter models trained on 80+ programming languages from The"
+        "description": "StarCoder was trained on GitHub code, thus it can be used to perform code generation."
+                       "More precisely, the model can complete the implementation of a function or infer"
+                       "the following characters in a line of code."
+                       "The StarCoder models are 15.5B parameter models trained on 80+ programming languages from The"
                        "Stack (v1.2), with opt-out requests excluded. The model uses Multi Query Attention, a context"
                        "window of 8192 tokens, and was trained using the Fill-in-the-Middle objective on 1"
                        "trillion tokens."
                        "Intended use The model was trained on GitHub code. As such it is not an instruction model and"
                        "commands like 'Write a function that computes the square root.' do not work well. However, by"
                        "using the Tech Assistant prompt you can turn it into a capable technical assistant.",
-        "url": "https://huggingface.co/bigcode/starcoder"
+        "url": "https://huggingface.co/bigcode/starcoder",
+        "api": "https://api-inference.huggingface.co/models/bigcode/starcoder",
+    },
+    "starcoder_tech_assistant": {
+        "names": ["starcoder_tech_assistant"],
+        "cost": "Free",
+        "description": "",
+        "url": "https://huggingface.co/datasets/bigcode/ta-prompt",
+        "api": "https://api-inference.huggingface.co/models/bigcode/ta-prompt",
     }
+}
+
+api = {
+    "token": d_config("HUGGING_FACE_TOKEN"),
+    "headers": {"Authorization": f"Bearer {d_config('HUGGING_FACE_TOKEN')}"}
 }
 
 

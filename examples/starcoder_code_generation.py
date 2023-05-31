@@ -3,36 +3,32 @@ https://github.com/bigcode-project/starcoder
 https://huggingface.co/bigcode/starcoder
 
 """
-import ast
-import re
-import json
-import requests
-from decouple import config as d_config
 from huggingface_hub import login
-from transformers import AutoModelForCausalLM, AutoTokenizer
+from src.code_completion.starcoder import StarcoderAPI
+from config.config_hugging_face import api, models
+from config import config_prompts
 
-HF_TOKEN = d_config("HUGGING_FACE_TOKEN")
-HF_INF_URL = "https://api-inference.huggingface.co/models/bigcode/starcoder"
+# Login to HuggingFace Hub
+login(token=api["token"])
 
+# Prompt
+prompt = "def create_pandas_dataframe(data: dict):"
 
+# API
+starApi = StarcoderAPI(
+    url=models["starcoder"]["api"],
+    headers=api["headers"],
+    prompt=prompt,
+    timeout=60
+).pipeline()
 
+print(starApi.response_clean)
 
 """
-# Login to HuggingFace Hub
-print('Logging into HF Hub')
-login(token=HF_TOKEN)
-print('Successfully logged in')
-
-"""Query the API"""
-headers = {"Authorization": f"Bearer {HF_TOKEN}"}
-question = {"inputs": "Generate a function to add two values.  The parameters to the functions are a and b.  Return the sum of a and b."}
-
-response = requests.post(
-    url=HF_INF_URL,
-    headers=headers,
-    json=question,
-    timeout=60
-)
+response_json = response.json()
+response_text = response_json[0]["generated_text"]
+response_clean = "".join(response_text.split("\n\n")[1:])
+print(response_clean)
 
 response = response.json()[0]["generated_text"]
 response = response.replace(question['inputs'], '').strip()
@@ -42,5 +38,4 @@ try:
     print(response)
 except Exception as err:
     print(err)
-
 """
