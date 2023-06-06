@@ -31,15 +31,10 @@ References
 # Import Libraries
 import os
 import logging
-from pprint import pprint
 from decouple import config as d_config
 
 from langchain.text_splitter import CharacterTextSplitter, RecursiveCharacterTextSplitter
-from langchain.vectorstores import Chroma
 from langchain.document_loaders import TextLoader, PyPDFLoader
-from langchain.indexes import VectorstoreIndexCreator
-from langchain.chains import RetrievalQA
-from langchain.llms import OpenAI
 
 # Settings
 logging.basicConfig(level=logging.INFO)
@@ -55,9 +50,14 @@ TEXT_FILE_NAME = "moby_dick.txt"
 PDF_FILE_NAME = "aig_app.pdf"
 os.environ["OPENAI_API_KEY"] = d_config("OPEN_AI_TOKEN")
 
-
 # Load Text
-def load_document(directory: str, file_name: str, file_extension: str) -> list:
+"""
+There are many different file types that can be loaded.  Langchain has document loaders
+for many file types https://python.langchain.com/en/latest/modules/indexes/document_loaders.html.
+
+Here, and for convinience, we have a function that determines the loader based on the file type.
+"""
+def load_document_by_type(directory: str, file_name: str, file_extension: str) -> list:
     """
 
     doc_n = documents[0]  # returns a langchain.schema.Document
@@ -70,6 +70,7 @@ def load_document(directory: str, file_name: str, file_extension: str) -> list:
     :return:
     """
     logger.info(f"Loading file with extension => {file_extension}")
+
     if file_extension == ".txt":
         loader = TextLoader(os.path.join(directory, file_name), encoding='utf8')
     elif file_extension == ".pdf":
@@ -77,41 +78,28 @@ def load_document(directory: str, file_name: str, file_extension: str) -> list:
     else:
         raise Exception("File extension not recognized")
     logger.info("Loading finished")
+
     return loader
 
+
+# Get Text Loader Object
+loader = load_document_by_type(directory=DIR_DATA, file_name=PDF_FILE_NAME, file_extension=".pdf")
+
+
 # Text Splitter
+"""
+Instantiate a text splitter object w/ parameters (there are many different types of text splitters).
+"""
 text_splitter = RecursiveCharacterTextSplitter(
-    # Set a really small chunk size, just to show.
-    chunk_size = 100,
-    chunk_overlap  = 20,
-    length_function = len,
+    chunk_size=256,
+    chunk_overlap=20,
+    length_function=len,
 )
 
-loader = load_document(directory=DIR_DATA, file_name=PDF_FILE_NAME, file_extension=".pdf")
-
-# text_loaded = loader.load()  # returns a list of langchain.schema.Document indexed by page number.
-# docN = text_loaded[1]
-# print(dir(docN))
-# print(docN.metadata)
-# print(docN.page_content)
-
-text_loaded = loader.load_and_split()
-docN = text_loaded[0]
-print(docN.page_content)
-
+# Load & Split Text
 """
-
-print(dir(loader))
-print(loader.source)
-print(loader.file_path)
-
-
-
-# Create an Index
-index = VectorstoreIndexCreator().from_loaders([loader])
-
-query = "What is a limit of Liability?"
-response = index.query(query)
-
-print(response)
+We load the text and split it into chunks at the same time.
+This is convenient for when we create vector stores.
 """
+documents = loader.load_and_split(text_splitter=text_splitter)
+docN = documents[0]
