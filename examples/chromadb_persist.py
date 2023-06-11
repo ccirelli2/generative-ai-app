@@ -28,6 +28,8 @@ import os
 import logging
 import chromadb
 from decouple import config as d_config
+from chromadb.config import Settings
+from sentence_transformers import SentenceTransformer
 from src.vector_stores.embeddings import LangChainLoadChunkDocs
 
 # Library Settings
@@ -46,52 +48,41 @@ TEXT_FILE_NAME = "moby_dick.txt"
 # Tutorial
 ##################################################
 
+# Define Chroma Client Settings (db & location to persist collection)
+settings = Settings(
+    chroma_db_impl="duckdb+parquet",
+    persist_directory="/home/christopher-cirelli/repositories/generative-ai-app/data/chroma_db",
+)
+
 # Create Chroma Client & Pass in Settings
-chroma_client = chromadb.Client()
+chroma_client = chromadb.Client(settings)
 chroma_client.reset()
 
 # Lost Existing Collections
 logger.info(f"List of  Collections => {chroma_client.list_collections()}")
 
-# Create Collection
-collection_name = "moby-dick"
+# Step4: Create Collection
+collection_name = "test-1"
 collection = chroma_client.get_or_create_collection(
     name=collection_name,
     metadata={"hnsw:space": "cosine"}
+    # embedding_function="sentence-transformers/all-MiniLM-L6-v2"
 )
 logger.info(f"Loading collection => {collection_name} with number of records => {collection.count()}")
 
-# Load & Chunk Text
-documents = LangChainLoadChunkDocs(
-    directory=DIR_DATA,
-    file_name=TEXT_FILE_NAME,
-    chunk_size=250,
-    chunk_overlap=20,
-    length_function=len
-).run().doc
-
-# Expose Documents, Metadata, & Create IDs.
-sample_size= 10
-document_text = [x.page_content for x in documents][:sample_size]
-document_metadata = [x.metadata for x in documents][:sample_size]
-document_ids = [f"chunk_{i}" for i in range(len(documents))][:sample_size]
-
-# Add Text to Collection
 collection.add(
     #embeddings=[[1.2, 2.3, 4.5]],
-    documents=document_text,
-    metadatas=document_metadata,
-    ids=document_ids
+    documents=['today is a nice day to code'],
+    metadatas=[{'source': 'my-mind'}],
+    ids=["id3"]
 )
 
-
-
-# # Query DB
-
-# response = collection.query(
-#     query_texts=["Who is Ahab?"],
-#     n_results=1
-# )
+# Query DB
+response = collection.query(
+    query_texts=["tomorrow is a good day to code"],
+    n_results=1
+)
 #
-# print(response)
+#
+print(response)
 

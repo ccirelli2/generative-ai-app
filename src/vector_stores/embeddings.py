@@ -43,7 +43,8 @@ class LangChainLoadChunkDocs:
         self._loader()
         self._splitter()
         self._load_chunk()
-        logger.info(f"Pipeline LoadChunkDocs Completed Successfully.  Returning {len(self.doc)} chunks.\n\n")
+        logger.info(f"Pipeline LoadChunkDocs Completed Successfully.  Returning {len(self.doc)} chunks.")
+        logger.info("Use .doc attribute to access chunks.\n\n")
         return self
 
     def _loader(self):
